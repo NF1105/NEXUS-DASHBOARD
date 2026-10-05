@@ -15,13 +15,12 @@ from ai_service import generate_study_response
 from flashcard_service import generate_flashcards
 from quick_reference_content import QUICK_REFERENCE_SUBJECTS
 from quiz_service import (
-    REFERENCE_SUBJECTS,
+ REFERENCE_SUBJECTS,
     format_reference_context,
     generate_quiz,
     get_reference_topics,
     match_reference_subject,
 )
-
 load_dotenv()
 
 st.set_page_config(page_title="NEXUS-DASHBOARD", page_icon="⚡", layout="wide")
