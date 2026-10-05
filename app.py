@@ -2,7 +2,6 @@ import os
 import json
 import datetime
 import html
-import uuid
 from textwrap import dedent
 import pandas as pd
 import plotly.express as px
