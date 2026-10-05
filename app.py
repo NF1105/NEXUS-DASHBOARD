@@ -1,14 +1,3 @@
-
-from quiz_service import (
-    REFERENCE_SUBJECTS,
-    format_reference_context,
-    generate_quiz,
-    get_reference_topics,
-    match_reference_subject,
-)
-
-load_dotenv()
-
 st.set_page_config(page_title="NEXUS-DASHBOARD", page_icon="⚡", layout="wide")
 
 st.session_state.setdefault("nexus_splash_shown", False)
