@@ -716,7 +716,7 @@ def render_tts_button(text_to_read, label="🔊 Read Aloud"):
             }});
         }})();
         </script>
-    """
+    """)
     st.html(html_code, width="content", unsafe_allow_javascript=True)
 
 # Helper: Citation Generator
@@ -1839,4 +1839,3 @@ elif nav_section == "📖 Quick Knowledge Library":
             with st.container(border=True):
                 st.markdown(f"**{index}. {title}**")
                 st.write(description)
-
