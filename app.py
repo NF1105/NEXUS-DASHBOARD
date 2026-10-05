@@ -1,17 +1,4 @@
-import os
-import json
-import datetime
-import html
-from textwrap import dedent
-import pandas as pd
-import plotly.express as px
-import streamlit as st
-from dotenv import load_dotenv
-from duckduckgo_search import DDGS
-from pypdf import PdfReader
-import database as db
-from ai_service import generate_study_response
-from flashcard_service import generate_flashcards
+
 from quiz_service import (
     REFERENCE_SUBJECTS,
     format_reference_context,
