@@ -1,4 +1,4 @@
- QUICK_REFERENCE_SUBJECTS = {
+QUICK_REFERENCE_SUBJECTS = {
     "Biology": [
         ("Cell theory", "All living things are made of cells; cells are the basic unit of life, and cells arise from pre-existing cells."),
         ("Prokaryotic and eukaryotic cells", "Prokaryotes lack a membrane-bound nucleus; eukaryotes have a nucleus and membrane-bound organelles."),
