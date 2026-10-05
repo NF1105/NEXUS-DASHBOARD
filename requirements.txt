@@ -1,0 +1,9 @@
+streamlit
+openai
+pandas
+plotly
+gTTS
+requests
+python-dotenv
+duckduckgo-search
+pypdf
