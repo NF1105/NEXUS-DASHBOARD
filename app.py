@@ -12,6 +12,7 @@ from pypdf import PdfReader
 import database as db
 from ai_service import generate_study_response
 from flashcard_service import generate_flashcards
+
 from quick_reference_content import QUICK_REFERENCE_SUBJECTS
 from quiz_service import (
     REFERENCE_SUBJECTS,
