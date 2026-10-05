@@ -3,6 +3,7 @@ import json
 import datetime
 import html
 import uuid
+from textwrap import dedent
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -29,173 +30,175 @@ st.session_state.setdefault("nexus_splash_shown", False)
 if not st.session_state.nexus_splash_shown:
     st.session_state.nexus_splash_shown = True
     st.html(
-        """
-        <div id="nexus-splash" role="status" aria-live="polite">
-            <div class="splash-orbit splash-orbit-one"></div>
-            <div class="splash-orbit splash-orbit-two"></div>
-            <div class="splash-content">
-                <div class="splash-mark" aria-hidden="true">N</div>
-                <h1>NEXUS-DASHBOARD</h1>
-                <p class="splash-credit">NF1105</p>
-                <p class="splash-tagline">Study to your hearts content</p>
-                <div class="splash-loader" aria-label="Loading NEXUS-DASHBOARD">
-                    <span></span>
+        dedent(
+            """
+            <div id="nexus-splash" role="status" aria-live="polite">
+                <div class="splash-orbit splash-orbit-one"></div>
+                <div class="splash-orbit splash-orbit-two"></div>
+                <div class="splash-content">
+                    <div class="splash-mark" aria-hidden="true">N</div>
+                    <h1>NEXUS-DASHBOARD</h1>
+                    <p class="splash-credit">NF1105</p>
+                    <p class="splash-tagline">Study to your hearts content</p>
+                    <div class="splash-loader" aria-label="Loading NEXUS-DASHBOARD">
+                        <span></span>
+                    </div>
+                    <button class="splash-skip" type="button">Enter workspace</button>
                 </div>
-                <button class="splash-skip" type="button">Enter workspace</button>
             </div>
-        </div>
-        <style>
-            #nexus-splash {
-                position: fixed;
-                inset: 0;
-                z-index: 999999;
-                display: grid;
-                place-items: center;
-                overflow: hidden;
-                background:
-                    radial-gradient(ellipse at 50% 42%, rgba(90, 88, 214, 0.28), transparent 42%),
-                    linear-gradient(145deg, #0b1020, #151a34 58%, #101629);
-                color: #f8f8ff;
-                font-family: "Segoe UI", Arial, sans-serif;
-                opacity: 1;
-                visibility: visible;
-                transition: opacity 520ms ease, visibility 520ms ease;
-            }
-            #nexus-splash.splash-hidden {
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-            }
-            #nexus-splash .splash-content {
-                position: relative;
-                z-index: 1;
-                width: min(92vw, 560px);
-                padding: 2rem;
-                text-align: center;
-                animation: nexus-rise 760ms cubic-bezier(.2, .75, .25, 1) both;
-            }
-            #nexus-splash .splash-mark {
-                display: grid;
-                width: 62px;
-                height: 62px;
-                margin: 0 auto 1.25rem;
-                place-items: center;
-                border: 1px solid rgba(196, 194, 255, .52);
-                border-radius: 20px;
-                background: linear-gradient(145deg, rgba(143, 139, 255, .32), rgba(143, 139, 255, .08));
-                box-shadow: 0 0 42px rgba(117, 112, 255, .3), inset 0 1px rgba(255, 255, 255, .24);
-                color: #fff;
-                font-size: 2rem;
-                font-weight: 800;
-            }
-            #nexus-splash h1 {
-                margin: 0;
-                color: #fff;
-                font-size: clamp(3.5rem, 12vw, 6rem);
-                font-weight: 800;
-                letter-spacing: .24em;
-                line-height: 1;
-                text-indent: .24em;
-                text-shadow: 0 0 38px rgba(156, 151, 255, .35);
-            }
-            #nexus-splash .splash-credit {
-                margin: 1.4rem 0 0;
-                color: #c9c8ff;
-                font-size: .8rem;
-                font-weight: 700;
-                letter-spacing: .28em;
-            }
-            #nexus-splash .splash-tagline {
-                margin: .9rem 0 0;
-                color: #d4d8e8;
-                font-size: clamp(1rem, 3vw, 1.2rem);
-                font-weight: 400;
-                letter-spacing: .025em;
-            }
-            #nexus-splash .splash-loader {
-                width: min(210px, 56vw);
-                height: 3px;
-                margin: 2.2rem auto 0;
-                overflow: hidden;
-                border-radius: 999px;
-                background: rgba(255, 255, 255, .13);
-                animation: nexus-loader-dismiss 300ms ease 2s forwards;
-            }
-            #nexus-splash .splash-loader span {
-                display: block;
-                width: 42%;
-                height: 100%;
-                border-radius: inherit;
-                background: linear-gradient(90deg, #8c8aff, #d2caff);
-                box-shadow: 0 0 16px rgba(160, 154, 255, .8);
-                animation: nexus-load 1.15s ease-in-out infinite;
-            }
-            #nexus-splash .splash-skip {
-                margin-top: 1.25rem;
-                padding: .5rem .9rem;
-                border: 1px solid rgba(226, 226, 255, .24);
-                border-radius: 999px;
-                background: rgba(255, 255, 255, .06);
-                color: #d4d8e8;
-                cursor: pointer;
-                font: inherit;
-                font-size: .78rem;
-                transition: background 160ms ease, border-color 160ms ease;
-            }
-            #nexus-splash .splash-skip:hover,
-            #nexus-splash .splash-skip:focus-visible {
-                border-color: rgba(196, 194, 255, .72);
-                background: rgba(143, 139, 255, .18);
-                outline: none;
-            }
-            #nexus-splash .splash-orbit {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: min(74vw, 510px);
-                aspect-ratio: 1;
-                border: 1px solid rgba(201, 200, 255, .08);
-                border-radius: 50%;
-                transform: translate(-50%, -50%);
-            }
-            #nexus-splash .splash-orbit-two {
-                width: min(94vw, 680px);
-                border-color: rgba(201, 200, 255, .045);
-            }
-            @keyframes nexus-rise {
-                from { opacity: 0; transform: translateY(14px) scale(.985); }
-                to { opacity: 1; transform: translateY(0) scale(1); }
-            }
-            @keyframes nexus-load {
-                from { transform: translateX(-120%); }
-                to { transform: translateX(260%); }
-            }
-            @keyframes nexus-loader-dismiss {
-                to { opacity: 0; visibility: hidden; }
-            }
-            @media (prefers-reduced-motion: reduce) {
-                #nexus-splash .splash-content { animation: none; }
-                #nexus-splash .splash-loader span { animation-duration: 2.8s; }
-                #nexus-splash { transition-duration: 1ms; }
-            }
-        </style>
-        <script>
-            (() => {
-                const splash = document.getElementById("nexus-splash");
-                if (!splash) return;
-                let dismissed = false;
+            <style>
+                #nexus-splash {
+                    position: fixed;
+                    inset: 0;
+                    z-index: 999999;
+                    display: grid;
+                    place-items: center;
+                    overflow: hidden;
+                    background:
+                        radial-gradient(ellipse at 50% 42%, rgba(90, 88, 214, 0.28), transparent 42%),
+                        linear-gradient(145deg, #0b1020, #151a34 58%, #101629);
+                    color: #f8f8ff;
+                    font-family: "Segoe UI", Arial, sans-serif;
+                    opacity: 1;
+                    visibility: visible;
+                    transition: opacity 520ms ease, visibility 520ms ease;
+                }
+                #nexus-splash.splash-hidden {
+                    opacity: 0;
+                    visibility: hidden;
+                    pointer-events: none;
+                }
+                #nexus-splash .splash-content {
+                    position: relative;
+                    z-index: 1;
+                    width: min(92vw, 560px);
+                    padding: 2rem;
+                    text-align: center;
+                    animation: nexus-rise 760ms cubic-bezier(.2, .75, .25, 1) both;
+                }
+                #nexus-splash .splash-mark {
+                    display: grid;
+                    width: 62px;
+                    height: 62px;
+                    margin: 0 auto 1.25rem;
+                    place-items: center;
+                    border: 1px solid rgba(196, 194, 255, .52);
+                    border-radius: 20px;
+                    background: linear-gradient(145deg, rgba(143, 139, 255, .32), rgba(143, 139, 255, .08));
+                    box-shadow: 0 0 42px rgba(117, 112, 255, .3), inset 0 1px rgba(255, 255, 255, .24);
+                    color: #fff;
+                    font-size: 2rem;
+                    font-weight: 800;
+                }
+                #nexus-splash h1 {
+                    margin: 0;
+                    color: #fff;
+                    font-size: clamp(3.5rem, 12vw, 6rem);
+                    font-weight: 800;
+                    letter-spacing: .24em;
+                    line-height: 1;
+                    text-indent: .24em;
+                    text-shadow: 0 0 38px rgba(156, 151, 255, .35);
+                }
+                #nexus-splash .splash-credit {
+                    margin: 1.4rem 0 0;
+                    color: #c9c8ff;
+                    font-size: .8rem;
+                    font-weight: 700;
+                    letter-spacing: .28em;
+                }
+                #nexus-splash .splash-tagline {
+                    margin: .9rem 0 0;
+                    color: #d4d8e8;
+                    font-size: clamp(1rem, 3vw, 1.2rem);
+                    font-weight: 400;
+                    letter-spacing: .025em;
+                }
+                #nexus-splash .splash-loader {
+                    width: min(210px, 56vw);
+                    height: 3px;
+                    margin: 2.2rem auto 0;
+                    overflow: hidden;
+                    border-radius: 999px;
+                    background: rgba(255, 255, 255, .13);
+                    animation: nexus-loader-dismiss 300ms ease 2s forwards;
+                }
+                #nexus-splash .splash-loader span {
+                    display: block;
+                    width: 42%;
+                    height: 100%;
+                    border-radius: inherit;
+                    background: linear-gradient(90deg, #8c8aff, #d2caff);
+                    box-shadow: 0 0 16px rgba(160, 154, 255, .8);
+                    animation: nexus-load 1.15s ease-in-out infinite;
+                }
+                #nexus-splash .splash-skip {
+                    margin-top: 1.25rem;
+                    padding: .5rem .9rem;
+                    border: 1px solid rgba(226, 226, 255, .24);
+                    border-radius: 999px;
+                    background: rgba(255, 255, 255, .06);
+                    color: #d4d8e8;
+                    cursor: pointer;
+                    font: inherit;
+                    font-size: .78rem;
+                    transition: background 160ms ease, border-color 160ms ease;
+                }
+                #nexus-splash .splash-skip:hover,
+                #nexus-splash .splash-skip:focus-visible {
+                    border-color: rgba(196, 194, 255, .72);
+                    background: rgba(143, 139, 255, .18);
+                    outline: none;
+                }
+                #nexus-splash .splash-orbit {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: min(74vw, 510px);
+                    aspect-ratio: 1;
+                    border: 1px solid rgba(201, 200, 255, .08);
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%);
+                }
+                #nexus-splash .splash-orbit-two {
+                    width: min(94vw, 680px);
+                    border-color: rgba(201, 200, 255, .045);
+                }
+                @keyframes nexus-rise {
+                    from { opacity: 0; transform: translateY(14px) scale(.985); }
+                    to { opacity: 1; transform: translateY(0) scale(1); }
+                }
+                @keyframes nexus-load {
+                    from { transform: translateX(-120%); }
+                    to { transform: translateX(260%); }
+                }
+                @keyframes nexus-loader-dismiss {
+                    to { opacity: 0; visibility: hidden; }
+                }
+                @media (prefers-reduced-motion: reduce) {
+                    #nexus-splash .splash-content { animation: none; }
+                    #nexus-splash .splash-loader span { animation-duration: 2.8s; }
+                    #nexus-splash { transition-duration: 1ms; }
+                }
+            </style>
+            <script>
+                (() => {
+                    const splash = document.getElementById("nexus-splash");
+                    if (!splash) return;
+                    let dismissed = false;
 
-                const dismiss = () => {
-                    if (dismissed) return;
-                    dismissed = true;
-                    splash.classList.add("splash-hidden");
-                    window.setTimeout(() => splash.remove(), 600);
-                };
+                    const dismiss = () => {
+                        if (dismissed) return;
+                        dismissed = true;
+                        splash.classList.add("splash-hidden");
+                        window.setTimeout(() => splash.remove(), 600);
+                    };
 
-                splash.querySelector(".splash-skip").addEventListener("click", dismiss);
-            })();
-        </script>
-        """,
+                    splash.querySelector(".splash-skip").addEventListener("click", dismiss);
+                })();
+            </script>
+            """
+        ),
         unsafe_allow_javascript=True,
     )
 
@@ -391,7 +394,8 @@ if st.session_state.appearance_mode not in THEME_PRESETS:
 active_theme = THEME_PRESETS[st.session_state.appearance_mode]
 appearance_slot = st.sidebar.empty()
 
-theme_css = """
+theme_css = dedent(
+    """
     <style>
     :root {
         --nx-background: __BACKGROUND__;
@@ -663,27 +667,25 @@ theme_css = """
         }
     }
     </style>
-"""
-theme_css = (
-    theme_css.replace("__BACKGROUND__", active_theme["background"])
-    .replace("__GLOW__", active_theme["background_glow"])
-    .replace("__SURFACE__", active_theme["surface"])
-    .replace("__SURFACE_ALT__", active_theme["surface_alt"])
-    .replace("__TEXT__", active_theme["text"])
-    .replace("__MUTED__", active_theme["muted"])
-    .replace("__BORDER__", active_theme["border"])
-    .replace("__ACCENT__", active_theme["accent"])
-    .replace("__ACCENT_HOVER__", active_theme["accent_hover"])
-    .replace("__ACCENT_SOFT__", active_theme["accent_soft"])
-    .replace("__ACCENT_TEXT__", active_theme["accent_text"])
-    .replace("__RADIUS__", active_theme["radius"])
-    .replace("__CARD_RADIUS__", active_theme["card_radius"])
-    .replace("__SHADOW__", active_theme["shadow"])
-    .replace("__CARD_SHADOW__", active_theme["card_shadow"])
-    .replace("__FONT__", active_theme["font"])
-    .replace("__HEADING_FONT__", active_theme["heading_font"])
+    """
+).replace("__BACKGROUND__", active_theme["background"]) \
+    .replace("__GLOW__", active_theme["background_glow"]) \
+    .replace("__SURFACE__", active_theme["surface"]) \
+    .replace("__SURFACE_ALT__", active_theme["surface_alt"]) \
+    .replace("__TEXT__", active_theme["text"]) \
+    .replace("__MUTED__", active_theme["muted"]) \
+    .replace("__BORDER__", active_theme["border"]) \
+    .replace("__ACCENT__", active_theme["accent"]) \
+    .replace("__ACCENT_HOVER__", active_theme["accent_hover"]) \
+    .replace("__ACCENT_SOFT__", active_theme["accent_soft"]) \
+    .replace("__ACCENT_TEXT__", active_theme["accent_text"]) \
+    .replace("__RADIUS__", active_theme["radius"]) \
+    .replace("__CARD_RADIUS__", active_theme["card_radius"]) \
+    .replace("__SHADOW__", active_theme["shadow"]) \
+    .replace("__CARD_SHADOW__", active_theme["card_shadow"]) \
+    .replace("__FONT__", active_theme["font"]) \
+    .replace("__HEADING_FONT__", active_theme["heading_font"]) \
     .replace("__DESIGN_CSS__", active_theme["design_css"])
-)
 st.markdown(theme_css, unsafe_allow_html=True)
 
 # Helper: Audio Voice Reader
@@ -697,25 +699,31 @@ def render_tts_button(text_to_read, label="🔊 Read Aloud"):
         .replace("\u2028", "\\u2028")
         .replace("\u2029", "\\u2029")
     )
-    html_code = f"""
+    html_code = dedent(
+        f"""
         <div id="{component_id}" style="display: flex; gap: 8px; align-items: center;">
-            <button type="button" class="tts-read" style="background: {active_theme['accent']}; color: white; border: none; padding: 7px 14px; border-radius: {active_theme['radius']}; cursor: pointer; font-weight: 600;">{html.escape(label)}</button>
-            <button type="button" class="tts-stop" aria-label="Stop reading aloud" style="background: {active_theme['surface_alt']}; color: {active_theme['text']}; border: 1px solid {active_theme['border']}; padding: 7px 14px; border-radius: {active_theme['radius']}; cursor: pointer; font-weight: 600;">⏹ Stop</button>
+            <button type="button" class="tts-read" style="background: {active_theme['accent']}; color: white; border: none; padding: 7px 14px; border-radius: {active_theme['radius']}; cursor: pointer;">
+                {label}
+            </button>
+            <button type="button" class="tts-stop" aria-label="Stop reading aloud" style="background: {active_theme['surface_alt']}; color: {active_theme['text']}; border: 1px solid {active_theme['border']}; padding: 7px 12px; border-radius: {active_theme['radius']}; cursor: pointer;">
+                Stop
+            </button>
         </div>
         <script>
         (() => {{
             const controls = document.getElementById("{component_id}");
             controls.querySelector(".tts-read").addEventListener("click", () => {{
-            window.speechSynthesis.cancel();
-            const msg = new SpeechSynthesisUtterance({speech_text});
-            window.speechSynthesis.speak(msg);
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance({speech_text});
+                window.speechSynthesis.speak(msg);
             }});
             controls.querySelector(".tts-stop").addEventListener("click", () => {{
                 window.speechSynthesis.cancel();
             }});
         }})();
         </script>
-    """
+        """
+    )
     st.html(html_code, width="content", unsafe_allow_javascript=True)
 
 # Helper: Citation Generator
@@ -897,7 +905,7 @@ with st.sidebar:
 
     st.divider()
     st.subheader("🤖 Interactive AI Assistant")
-    
+
     # Interactive AI Action Buttons
     if st.button("⚡ AI: Complete High Priority Tasks", use_container_width=True):
         tasks = db.get_tasks()
@@ -993,7 +1001,7 @@ if nav_section == "📊 Dashboard & Analytics":
                     st.rerun()
     else:
         st.caption("No reading reminders scheduled.")
-    
+
     study_df = db.get_study_hours_data()
     task_df = db.get_task_status_data()
 
@@ -1426,7 +1434,7 @@ elif nav_section == "📂 Laptop File & Note Upload":
                 for page in reader.pages: content += page.extract_text() or ""
             else:
                 content = uploaded_file.read().decode("utf-8")
-            
+
             db.save_subject_note(active_subject["id"], uploaded_file.name, content)
             st.toast(f"File '{uploaded_file.name}' saved!")
             st.rerun()
@@ -1812,7 +1820,7 @@ elif nav_section == "🌐 Web Search & Citation Hub":
             st.subheader(res["title"])
             st.write(res["snippet"])
             st.markdown(f"**Source:** [{res['link']}]({res['link']})")
-            
+
             citation = generate_citation(res["title"], res["link"], style=cite_style)
             st.code(citation, language="markdown")
             render_tts_button(f"{res['title']}. {res['snippet']}", label="🔊 Read Aloud")
